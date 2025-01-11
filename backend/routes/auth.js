@@ -12,7 +12,7 @@ const { registerUser,
     allUsers,
     getUserDetails,
     updateUser,
-    sendMessage,
+    // sendMessage,
 } = require('../controllers/auth');
     const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 
@@ -26,5 +26,5 @@ router.put('/password/reset/:token', resetPassword);
 
 router.get('/admin/users', isAuthenticatedUser, authorizeRoles('admin'), allUsers)
 router.route('/admin/user/:id').get(isAuthenticatedUser,  getUserDetails).put(isAuthenticatedUser, updateUser)
-router.get('/send', sendMessage );
+// router.get('/send', sendMessage );
 module.exports = router;

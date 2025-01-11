@@ -7,6 +7,7 @@ import {
     
    
 } from './reducers/productReducers'
+import { authReducer, } from './reducers/userReducers'
 
 
 
@@ -29,6 +30,7 @@ let initialState = {
 const reducer = combineReducers({ 
     products: productsReducer,
     productDetails: productDetailsReducer,
+    auth: authReducer,
 })
 
 const middlware = [thunk]

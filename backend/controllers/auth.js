@@ -6,10 +6,10 @@ const cloudinary = require('cloudinary')
 const admin = require("firebase-admin");
 var serviceAccount = require('../config/firebase.json')
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://fir-app-fd8f1-default-rtdb.firebaseio.com"
-  });
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: "https://fir-app-fd8f1-default-rtdb.firebaseio.com"
+//   });
 
 exports.registerUser = async (req, res, next) => {
    
@@ -264,27 +264,27 @@ exports.updateUser = async (req, res, next) => {
     })
 }
 
-exports.sendMessage = async (req, res, next) => {
+// exports.sendMessage = async (req, res, next) => {
     
     
    
-    const message = {
-        notification: {
-            title: 'Message from node nov 7',
-            body: 'hello pushy',
-            imageUrl: 'https://res.cloudinary.com/dgneiaky7/image/upload/v1728010631/products/pstnuskit4hycbl81dlb.png'
-        },
-        // topic
-        token: 'fiWWQn_-4m5gclosAWhNyb:APA91bEClp3LaZjESHT8zCpeOQhwif6Dhxfx4dno_6MwrJy2Q904UroXJ2jw7j5G-brb1stxWRAbd1Hz8nE0K1UuOg2AmuQAXHuwQnDK0RoOfJJT9FksFjs',
-    };
-    try {
-        response = await admin.messaging().send(message)
-        console.log('Node nov 7:', response);
-        return res.status(200).json({ message: 'success sent message', response })
-    } catch (error) {
-        console.log('Error sending message:', error);
-        return res.status(200).json({ message: error })
+//     const message = {
+//         notification: {
+//             title: 'Message from node nov 7',
+//             body: 'hello pushy',
+//             imageUrl: 'https://res.cloudinary.com/dgneiaky7/image/upload/v1728010631/products/pstnuskit4hycbl81dlb.png'
+//         },
+//         // topic
+//         token: 'fiWWQn_-4m5gclosAWhNyb:APA91bEClp3LaZjESHT8zCpeOQhwif6Dhxfx4dno_6MwrJy2Q904UroXJ2jw7j5G-brb1stxWRAbd1Hz8nE0K1UuOg2AmuQAXHuwQnDK0RoOfJJT9FksFjs',
+//     };
+//     try {
+//         response = await admin.messaging().send(message)
+//         console.log('Node nov 7:', response);
+//         return res.status(200).json({ message: 'success sent message', response })
+//     } catch (error) {
+//         console.log('Error sending message:', error);
+//         return res.status(200).json({ message: error })
 
-    }
- }
+//     }
+//  }
 
