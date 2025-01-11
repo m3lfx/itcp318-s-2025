@@ -152,7 +152,15 @@ function App() {
           <Route path="/search/:keyword" element={<Home />} exact="true" />
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register exact="true" />} />
-          <Route path="/me" element={<Profile exact="true" />} />
+          {/* <Route path="/me" element={<Profile exact="true" />} /> */}
+          <Route
+            path="/me"
+            element={
+              <ProtectedRoute >
+                <Profile exact="true" />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/me/update"
             element={<UpdateProfile />
             }

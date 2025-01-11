@@ -106,6 +106,28 @@ export const logout = () => async (dispatch) => {
     }
 }
 
+export const loadUser = () => async (dispatch) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        }
+        dispatch({ type: LOAD_USER_REQUEST })
+        const { data } = await axios.get(`${import.meta.env.VITE_API}/me`,config)
+        dispatch({
+            type: LOAD_USER_SUCCESS,
+            payload: data.user
+        })
+    } catch (error) {
+        dispatch({
+            type: LOAD_USER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
 
 
 
