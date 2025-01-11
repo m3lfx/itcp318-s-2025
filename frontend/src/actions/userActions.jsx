@@ -47,7 +47,7 @@ export const register = (userData) => async (dispatch) => {
             }
         }
         const { data } = await axios.post(`${import.meta.env.VITE_API}/register`, userData, config)
-        
+
         dispatch({
             type: REGISTER_USER_SUCCESS,
             payload: data.user
@@ -60,9 +60,57 @@ export const register = (userData) => async (dispatch) => {
     }
 }
 
+export const login = (email, password) => async (dispatch) => {
+    try {
+        dispatch({ type: LOGIN_REQUEST })
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // withCredentials: true,
+        }
+
+        const { data } = await axios.post(`${import.meta.env.VITE_API}/login`, { email, password }, config)
+        console.log(data.user)
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data.user
+        })
+    } catch (error) {
+        console.log(error.response.data.message)
+
+        dispatch({
+            type: LOGIN_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const logout = () => async (dispatch) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        }
+        await axios.get(`${import.meta.env.VITE_API}/logout`,config)
+        dispatch({
+            type: LOGOUT_SUCCESS,
+        })
+    } catch (error) {
+        dispatch({
+            type: LOGOUT_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+
 
 export const clearErrors = () => async (dispatch) => {
-	dispatch({
-		type: CLEAR_ERRORS
-	})
+    dispatch({
+        type: CLEAR_ERRORS
+    })
 }

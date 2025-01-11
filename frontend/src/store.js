@@ -7,7 +7,7 @@ import {
     
    
 } from './reducers/productReducers'
-import { authReducer, } from './reducers/userReducers'
+import { authReducer, userReducer} from './reducers/userReducers'
 
 
 
@@ -31,6 +31,7 @@ const reducer = combineReducers({
     products: productsReducer,
     productDetails: productDetailsReducer,
     auth: authReducer,
+    user: userReducer,
 })
 
 const middlware = [thunk]

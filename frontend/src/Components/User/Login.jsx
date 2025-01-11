@@ -6,51 +6,67 @@ import MetaData from '../Layout/MetaData';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import {authenticate, getUser} from '../../utils/helpers'
+import { authenticate, getUser } from '../../utils/helpers'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, clearErrors } from '../../actions/userActions'
 
 
 
 const Login = () => {
-
+    const { isAuthenticated, error, loading, user } = useSelector(state => state.auth)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-    
+    // const [loading, setLoading] = useState(false)
+    // const [error, setError] = useState('')
+
     const navigate = useNavigate()
     let location = useLocation()
+    const dispatch = useDispatch()
+
     // console.log(location)
     const redirect = location.search ? new URLSearchParams(location.search).get('redirect') : ''
     // const notify = (error) => toast.error(error, {
     //     position: toast.POSITION.BOTTOM_RIGHT
     // });
 
-    const login = async (email, password) => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-            const { data } = await axios.post(`${import.meta.env.VITE_API}/login`, { email, password }, config)
-            console.log(data)
-            authenticate(data, () => navigate("/"))
-            
-        } catch (error) {
-            toast.error("invalid user or password", {
-                position: "bottom-right"
-            })
-        }
-    }
+    // const login = async (email, password) => {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         }
+    //         const { data } = await axios.post(`${import.meta.env.VITE_API}/login`, { email, password }, config)
+    //         console.log(data)
+    //         authenticate(data, () => navigate("/"))
+
+    //     } catch (error) {
+    //         toast.error("invalid user or password", {
+    //             position: "bottom-right"
+    //         })
+    //     }
+    // }
     const submitHandler = (e) => {
         e.preventDefault();
-        login(email, password)
+        dispatch(login(email, password))
     }
+    // useEffect(() => {
+    //     if (getUser() && redirect === 'shipping') {
+    //         navigate(`/${redirect}`)
+    //     }
+    // }, [])
     useEffect(() => {
-        if (getUser() && redirect === 'shipping' ) {
-             navigate(`/${redirect}`)
+        if (isAuthenticated && redirect === 'shipping') {
+            navigate(`/${redirect}`)
         }
-    }, [])
+        else if (isAuthenticated)
+            navigate('/')
+        if (error) {
+            // alert.error(error);
+            console.log(error)
+            dispatch(clearErrors());
+        }
+    }, [error, isAuthenticated, dispatch, navigate, redirect])
 
     return (
         <>
@@ -60,8 +76,8 @@ const Login = () => {
 
                     <div className="row wrapper">
                         <div className="col-10 col-lg-5">
-                            <form className="shadow-lg" 
-                            onSubmit={submitHandler}
+                            <form className="shadow-lg"
+                                onSubmit={submitHandler}
                             >
                                 <h1 className="mb-3">Login</h1>
                                 <div className="form-group">
