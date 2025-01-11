@@ -38,15 +38,15 @@ import { messaging } from "./config/firebase";
 import Message from './Components/Layout/Message';
 function App() {
   const { VITE_APP_VAPID_KEY } = import.meta.env;
-  const [state, setState] = useState({
-    cartItems: localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
-      : [],
-    shippingInfo: localStorage.getItem('shippingInfo')
-      ? JSON.parse(localStorage.getItem('shippingInfo'))
-      : {},
+  // const [state, setState] = useState({
+  //   cartItems: localStorage.getItem('cartItems')
+  //     ? JSON.parse(localStorage.getItem('cartItems'))
+  //     : [],
+  //   shippingInfo: localStorage.getItem('shippingInfo')
+  //     ? JSON.parse(localStorage.getItem('shippingInfo'))
+  //     : {},
 
-  })
+  // })
 
   // const navigate = useNavigate()
 
@@ -145,10 +145,10 @@ function App() {
     <div className="App">
 
       <Router>
-        <Header cartItems={state.cartItems} />
+        <Header  />
         <Routes>
           <Route path="/" element={<Home />} exact="true" />
-          <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} addItemToCart={addItemToCart} />} exact="true" />
+          <Route path="/product/:id" element={<ProductDetails  addItemToCart={addItemToCart} />} exact="true" />
           <Route path="/search/:keyword" element={<Home />} exact="true" />
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register exact="true" />} />
@@ -161,18 +161,27 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/me/update"
+
+          <Route
+            path="/me/update"
+            element={
+              <ProtectedRoute >
+                <UpdateProfile exact="true" />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/me/update"
             element={<UpdateProfile />
             }
             exact="true"
-          />
+          /> */}
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
           <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
-          <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
-          <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
-          <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
-          <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
+          <Route path="/cart" element={<Cart  addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
+          <Route path="/shipping" element={<Shipping  />} />
+          <Route path="/confirm" element={<ConfirmOrder  />} />
+          <Route path="/payment" element={<Payment  />} />
           <Route path="/success" element={<OrderSuccess />} />
 
           <Route path="/orders/me" element={<ListOrders />} />
@@ -232,12 +241,12 @@ function App() {
             }
           />
 
-<Route
-          path="/admin/reviews"
-          element={
-            <ProtectedRoute isAdmin={true} >
-              <ProductReviews />
-            </ProtectedRoute>} />
+          <Route
+            path="/admin/reviews"
+            element={
+              <ProtectedRoute isAdmin={true} >
+                <ProductReviews />
+              </ProtectedRoute>} />
         </Routes>
       </Router>
       <Footer />

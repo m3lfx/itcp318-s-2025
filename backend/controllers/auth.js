@@ -94,25 +94,25 @@ exports.updateProfile = async (req, res, next) => {
     }
 
     // Update avatar
-    if (req.body.avatar !== '') {
-        let user = await User.findById(req.user.id)
-        // console.log(user)
-        const image_id = user.avatar.public_id;
-        // const res = await cloudinary.v2.uploader.destroy(image_id);
-        // console.log("Res", res)
-        const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
-            folder: 'avatars',
-            width: 150,
-            crop: "scale"
-        },  (err, res) => {
-            console.log(err, res);
-        })
+    // if (req.body.avatar !== '') {
+    //     let user = await User.findById(req.user.id)
+    //     // console.log(user)
+    //     const image_id = user.avatar.public_id;
+    //     const res = await cloudinary.v2.uploader.destroy(image_id);
+    //     // console.log("Res", res)
+    //     const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    //         folder: 'avatars',
+    //         width: 150,
+    //         crop: "scale"
+    //     },  (err, res) => {
+    //         console.log(err, res);
+    //     })
 
-        newUserData.avatar = {
-            public_id: result.public_id,
-            url: result.secure_url
-        }
-    }
+    //     newUserData.avatar = {
+    //         public_id: result.public_id,
+    //         url: result.secure_url
+    //     }
+    // }
 
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new: true,

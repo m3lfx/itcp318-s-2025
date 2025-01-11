@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../actions/userActions'
 
 
-const Header = ({ cartItems }) => {
+const Header = () => {
     const dispatch = useDispatch();
 	const { user, loading } = useSelector(state => state.auth)
     // const [user, setUser] = useState({})
@@ -88,7 +88,7 @@ const Header = ({ cartItems }) => {
 
                         {/*<span className="ml-1" id="cart_count">2</span>*/}
                     </Link>
-                    <span className="ml-1" id="cart_count">{cartItems.length}</span>
+                    <span className="ml-1" id="cart_count"></span>
                     {/* <span className="ml-1" id="cart_count">2</span> */}
                 </div>
             </nav>

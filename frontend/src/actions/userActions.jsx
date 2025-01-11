@@ -128,6 +128,30 @@ export const loadUser = () => async (dispatch) => {
     }
 }
 
+export const updateProfile = (userData) => async (dispatch) => {
+    try {
+        
+        dispatch({ type: UPDATE_PROFILE_REQUEST })
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true,
+        }
+        const { data } = await axios.put(`${import.meta.env.VITE_API}/me/update`, userData, config)
+        dispatch({
+            type: UPDATE_PROFILE_SUCCESS,
+            payload: data.success
+        })
+    } catch (error) {
+        dispatch({
+            type: UPDATE_PROFILE_FAIL,
+            payload: error.response.data.message
+        })
+    }
+
+}
+
 
 
 

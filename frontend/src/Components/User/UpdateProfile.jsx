@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getToken } from '../../utils/helpers';
-import { loadUser, clearErrors } from '../../actions/userActions'
+import { updateProfile, loadUser, clearErrors } from '../../actions/userActions'
 
 import { UPDATE_PROFILE_RESET } from '../../constants/userConstants'
 import { useDispatch, useSelector } from 'react-redux'
@@ -46,31 +46,31 @@ const UpdateProfile = () => {
     //     }
     // }
 
-    const updateProfile = async (userData) => {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${getToken()}`
-            }
-        }
-        try {
-            const { data } = await axios.put(`http://localhost:4001/api/v1/me/update`, userData, config)
-            setIsUpdated(data.success)
-            setLoading(false)
-            toast.success('user updated', {
-                position: 'bottom-right'
-            });
-            //  getProfile();
-            navigate('/me', { replace: true })
+    // const updateProfile = async (userData) => {
+    //     const config = {
+    //         headers: {
+    //             'Content-Type': 'multipart/form-data',
+    //             'Authorization': `Bearer ${getToken()}`
+    //         }
+    //     }
+    //     try {
+    //         const { data } = await axios.put(`http://localhost:4001/api/v1/me/update`, userData, config)
+    //         setIsUpdated(data.success)
+    //         setLoading(false)
+    //         toast.success('user updated', {
+    //             position: 'bottom-right'
+    //         });
+    //         //  getProfile();
+    //         navigate('/me', { replace: true })
 
 
-        } catch (error) {
-            console.log(error)
-            toast.error('user not found', {
-                position: 'bottom-right'
-            });
-        }
-    }
+    //     } catch (error) {
+    //         console.log(error)
+    //         toast.error('user not found', {
+    //             position: 'bottom-right'
+    //         });
+    //     }
+    // }
 
     // console.log(error)
     // useEffect(() => {
@@ -105,7 +105,7 @@ const UpdateProfile = () => {
         formData.set('name', name);
         formData.set('email', email);
         formData.set('avatar', avatar);
-        updateProfile(formData)
+        dispatch(updateProfile(formData))
     }
 
     const onChange = e => {
