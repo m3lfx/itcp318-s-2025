@@ -103,7 +103,8 @@ export const userReducer = (state = {}, action) => {
         case DELETE_USER_REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                isUpdated: false,
             }
         case UPDATE_PROFILE_SUCCESS:
         case UPDATE_PASSWORD_SUCCESS:

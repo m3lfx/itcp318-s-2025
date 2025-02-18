@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children, isAdmin = false }) => {
     // const [error, setError] = useState('')
     // const [user, setUser] = useState(getUser())
     // const [isAuthenticated, setIsAuthenticated] = useState(false)
-    // console.log(children.type.name, loading)
+    console.log(children.type.name)
 
     const { isAuthenticated, loading, user } = useSelector(state => state.auth);
     
@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children, isAdmin = false }) => {
         }
         return children
     }
-    
+
     return <Loader />;
 
 };

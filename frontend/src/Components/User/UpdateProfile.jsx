@@ -79,7 +79,7 @@ const UpdateProfile = () => {
     // }, [dispatch])
 
     useEffect(() => {
-        console.log(isUpdated)
+        console.log(user)
         if (user) {
             setName(user.name);
             setEmail(user.email);
@@ -87,6 +87,7 @@ const UpdateProfile = () => {
         }
         if (error) {
             // alert.error(error);
+            console.log(error)
             dispatch(clearErrors());
         }
         if (isUpdated) {
@@ -121,7 +122,7 @@ const UpdateProfile = () => {
         reader.readAsDataURL(e.target.files[0])
 
     }
-    console.log(user)
+    // console.log(user)
     return (
         <>
             <MetaData title={'Update Profile'} />
@@ -183,7 +184,7 @@ const UpdateProfile = () => {
                             </div>
                         </div>
 
-                        <button type="submit" className="btn update-btn btn-block mt-4 mb-3" disabled={loading ? true : false} >Update</button>
+                        <button type="submit" className="btn update-btn btn-block mt-4 mb-3"  >Update</button>
                     </form>
                 </div>
             </div>

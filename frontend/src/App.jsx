@@ -33,9 +33,9 @@ import Dashboard from './Components/Admin/Dashboard';
 import ProductReviews from './Components/Admin/ProcessReview';
 import axios from 'axios';
 
-import { getToken, onMessage } from "firebase/messaging";
-import { messaging } from "./config/firebase";
-import Message from './Components/Layout/Message';
+// import { getToken, onMessage } from "firebase/messaging";
+// import { messaging } from "./config/firebase";
+// import Message from './Components/Layout/Message';
 function App() {
   const { VITE_APP_VAPID_KEY } = import.meta.env;
   // const [state, setState] = useState({
@@ -111,31 +111,31 @@ function App() {
     localStorage.setItem('shippingInfo', JSON.stringify(data))
   }
 
-  const requestPermission = async () => {
-    //requesting permission using Notification API
-    const permission = await Notification.requestPermission();
+  // const requestPermission = async () => {
+  //   //requesting permission using Notification API
+  //   const permission = await Notification.requestPermission();
 
-    if (permission === "granted") {
-      const token = await getToken(messaging, {
-        vapidKey: VITE_APP_VAPID_KEY,
-      });
+  //   if (permission === "granted") {
+  //     const token = await getToken(messaging, {
+  //       vapidKey: VITE_APP_VAPID_KEY,
+  //     });
 
-      //We can send token to server
-      console.log("Token generated : ", token);
-    } else if (permission === "denied") {
-      //notifications are blocked
-      alert("You denied for the notification");
-    }
-  }
+  //     //We can send token to server
+  //     console.log("Token generated : ", token);
+  //   } else if (permission === "denied") {
+  //     //notifications are blocked
+  //     alert("You denied for the notification");
+  //   }
+  // }
 
-  onMessage(messaging, (payload) => {
-    console.log(payload)
-    toast(<Message notification={payload.notification} />);
-  });
+  // onMessage(messaging, (payload) => {
+  //   console.log(payload)
+  //   toast(<Message notification={payload.notification} />);
+  // });
 
-  useEffect(() => {
-    requestPermission();
-  }, []);
+  // useEffect(() => {
+  //   requestPermission();
+  // }, []);
 
 
 

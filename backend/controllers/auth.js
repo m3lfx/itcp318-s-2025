@@ -3,8 +3,8 @@ const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
 const cloudinary = require('cloudinary')
-const admin = require("firebase-admin");
-var serviceAccount = require('../config/firebase.json')
+// const admin = require("firebase-admin");
+// var serviceAccount = require('../config/firebase.json')
 
 // admin.initializeApp({
 //     credential: admin.credential.cert(serviceAccount),
@@ -52,8 +52,8 @@ exports.loginUser = async (req, res, next) => {
   
 
     // Finding user in database
-    // const userPass = await User.findOne({ email }).select('+password')
-    let user = await User.findOne({ email }).select('+password')
+     const user = await User.findOne({ email }).select('+password')
+    // let user = await User.findOne({ email })
     if (!user) {
         return res.status(401).json({ message: 'Invalid Email or Password' })
     }
@@ -241,6 +241,7 @@ exports.getUserDetails = async (req, res, next) => {
 }
 
 exports.updateUser = async (req, res, next) => {
+    
     const newUserData = {
         name: req.body.name,
         email: req.body.email,
