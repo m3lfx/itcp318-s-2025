@@ -1,10 +1,10 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import MetaData from '../Layout/MetaData'
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { toast } from 'react-toastify';
+// import axios from 'axios';
+// import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getToken } from '../../utils/helpers';
+// import { getToken } from '../../utils/helpers';
 import { updateProfile, loadUser, clearErrors } from '../../actions/userActions'
 
 import { UPDATE_PROFILE_RESET } from '../../constants/userConstants'
