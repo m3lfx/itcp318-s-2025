@@ -4,10 +4,14 @@ import { thunk } from 'redux-thunk';
 import {
     productsReducer,
     productDetailsReducer,
+    newProductReducer,
     
    
 } from './reducers/productReducers'
-import { authReducer, userReducer} from './reducers/userReducers'
+import { authReducer, 
+    userReducer, 
+    forgotPasswordReducer, 
+} from './reducers/userReducers'
 
 
 
@@ -32,6 +36,8 @@ const reducer = combineReducers({
     productDetails: productDetailsReducer,
     auth: authReducer,
     user: userReducer,
+    forgotPassword: forgotPasswordReducer,
+    newProduct: newProductReducer,
 })
 
 const middlware = [thunk]

@@ -9,59 +9,84 @@ import { getToken } from '../../utils/helpers';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    getAdminProducts,
+    // deleteProduct,
+    clearErrors,
+} from '../../actions/productActions'
+import { DELETE_PRODUCT_RESET } from '../../constants/productConstants'
 
 const ProductsList = () => {
-    const [products, setProducts] = useState([])
-    const [error, setError] = useState('')
-    const [deleteError, setDeleteError] = useState('')
+    const dispatch = useDispatch();
+    const { loading, error, products } = useSelector(state => state.products)
+    // const { error: deleteError, isDeleted } = useSelector(state => state.product)
+    // const [products, setProducts] = useState([])
+    // const [error, setError] = useState('')
+    // const [deleteError, setDeleteError] = useState('')
     
-    const [loading, setLoading] = useState(true)
-    const [isDeleted, setIsDeleted] = useState(false)
+    // const [loading, setLoading] = useState(true)
+    // const [isDeleted, setIsDeleted] = useState(false)
 
     let navigate = useNavigate()
-    const getAdminProducts = async () => {
-        try {
+    // const getAdminProducts = async () => {
+    //     try {
 
-            const config = {
-                headers: {
-                    'Authorization': `Bearer ${getToken()}`
-                }
-            }
+    //         const config = {
+    //             headers: {
+    //                 'Authorization': `Bearer ${getToken()}`
+    //             }
+    //         }
 
-            const { data } = await axios.get(`${import.meta.env.VITE_API}/admin/products`, config)
-            console.log(data)
-            setProducts(data.products)
-            setLoading(false)
-        } catch (error) {
+    //         const { data } = await axios.get(`${import.meta.env.VITE_API}/admin/products`, config)
+    //         console.log(data)
+    //         setProducts(data.products)
+    //         setLoading(false)
+    //     } catch (error) {
 
-            setError(error.response.data.message)
+    //         setError(error.response.data.message)
 
-        }
-    }
+    //     }
+    // }
+    // useEffect(() => {
+    //     getAdminProducts()
+
+    //     if (error) {
+    //         toast.error(error, {
+    //             position: 'bottom-right'
+    //         });
+    //     }
+
+    //     if (deleteError) {
+    //         toast.error(deleteError, {
+    //             position: 'bottom-right'
+    //         });
+    //     }
+
+    //     if (isDeleted) {
+    //         toast.success('Product deleted successfully', {
+    //             position: 'bottom-right'
+    //         })
+    //         navigate('/admin/products');
+
+    //     }
+
+    // }, [error, deleteError, isDeleted,])
+
     useEffect(() => {
-        getAdminProducts()
-
+        dispatch(getAdminProducts());
         if (error) {
-            toast.error(error, {
-                position: 'bottom-right'
-            });
+            console.log(error)
+            dispatch(clearErrors())
         }
-
-        if (deleteError) {
-            toast.error(deleteError, {
-                position: 'bottom-right'
-            });
-        }
-
-        if (isDeleted) {
-            toast.success('Product deleted successfully', {
-                position: 'bottom-right'
-            })
-            navigate('/admin/products');
-
-        }
-
-    }, [error, deleteError, isDeleted,])
+        // if (deleteError) {
+        //     dispatch(clearErrors())
+        // }
+        // if (isDeleted) {
+        //     navigate('/admin/products');
+        //     dispatch({ type: DELETE_PRODUCT_RESET })
+        // }
+    }, [dispatch, error, navigate,])
 
     const deleteProduct = async (id) => {
         try {
