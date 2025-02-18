@@ -1,53 +1,71 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, {  useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import MetaData from '../Layout/MetaData';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import { getToken } from '../../utils/helpers';
+// import axios from 'axios';
+// import { getToken } from '../../utils/helpers';
+import { useDispatch, useSelector } from 'react-redux'
+import { updatePassword, clearErrors } from '../../actions/userActions'
+import { UPDATE_PASSWORD_RESET } from '../../constants/userConstants'
 
 const UpdatePassword = () => {
-
+    const dispatch = useDispatch()
+    const { error, isUpdated, loading } = useSelector(state => state.user)
     const [oldPassword, setOldPassword] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const [isUpdated, setIsUpdated] = useState(false)
-    const [loading, setLoading] = useState(false)
+    // const [error, setError] = useState('')
+    // const [isUpdated, setIsUpdated] = useState(false)
+    // const [loading, setLoading] = useState(false)
     let navigate = useNavigate();
-    const updatePassword = async (formData) => {
-        console.log(formData)
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                     'Authorization': `Bearer ${getToken()}`
+    // const updatePassword = async (formData) => {
+    //     console.log(formData)
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                  'Authorization': `Bearer ${getToken()}`
                     
-                }
-            }
+    //             }
+    //         }
 
-            const {data } = await axios.put(`http://localhost:4001/api/v1/password/update`, formData, config)
-            setIsUpdated(data.success)
-            setLoading(false)
-            toast.success('password updated', {
-                position: 'bottom-right' });
-            navigate('/me')
+    //         const {data } = await axios.put(`http://localhost:4001/api/v1/password/update`, formData, config)
+    //         setIsUpdated(data.success)
+    //         setLoading(false)
+    //         toast.success('password updated', {
+    //             position: 'bottom-right' });
+    //         navigate('/me')
 
 
-        } catch (error) {
-            setError(error.response.data.message)
+    //     } catch (error) {
+    //         setError(error.response.data.message)
 
-        }
-    }
+    //     }
+    // // }
+    // useEffect(() => {
+
+    //     if (error) {
+    //         toast.error(error, {
+    //             position: 'bottom-right'
+    //         });
+    //     }
+
+
+    // }, [error, ])
+
     useEffect(() => {
-
         if (error) {
-            toast.error(error, {
-                position: 'bottom-right'
-            });
+            console.log(error)
+            dispatch(clearErrors());
         }
+        if (isUpdated) {
+            navigate('/me')
+            dispatch({
+                type: UPDATE_PASSWORD_RESET
+            })
+        }
+    }, [dispatch,  error, navigate, isUpdated])
 
-
-    }, [error, ])
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -56,7 +74,7 @@ const UpdatePassword = () => {
         formData.set('oldPassword', oldPassword);
         formData.set('password', password);
 
-        updatePassword(formData)
+        dispatch(updatePassword(formData))
     }
 
     return (

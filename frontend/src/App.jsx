@@ -50,66 +50,66 @@ function App() {
 
   // const navigate = useNavigate()
 
-  const addItemToCart = async (id, quantity) => {
-    // console.log(id, quantity)
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_API}/product/${id}`)
-      const item = {
-        product: data.product._id,
-        name: data.product.name,
-        price: data.product.price,
-        image: data.product.images[0].url,
-        stock: data.product.stock,
-        quantity: quantity
-      }
+  // const addItemToCart = async (id, quantity) => {
+  //   // console.log(id, quantity)
+  //   try {
+  //     const { data } = await axios.get(`${import.meta.env.VITE_API}/product/${id}`)
+  //     const item = {
+  //       product: data.product._id,
+  //       name: data.product.name,
+  //       price: data.product.price,
+  //       image: data.product.images[0].url,
+  //       stock: data.product.stock,
+  //       quantity: quantity
+  //     }
 
-      const isItemExist = state.cartItems.find(i => i.product === item.product)
-      console.log(state)
-      setState({
-        ...state,
-        cartItems: [...state.cartItems, item]
-      })
-      if (isItemExist) {
-        setState({
-          ...state,
-          cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
-        })
-      }
-      else {
-        setState({
-          ...state,
-          cartItems: [...state.cartItems, item]
-        })
-      }
+  //     const isItemExist = state.cartItems.find(i => i.product === item.product)
+  //     console.log(state)
+  //     setState({
+  //       ...state,
+  //       cartItems: [...state.cartItems, item]
+  //     })
+  //     if (isItemExist) {
+  //       setState({
+  //         ...state,
+  //         cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
+  //       })
+  //     }
+  //     else {
+  //       setState({
+  //         ...state,
+  //         cartItems: [...state.cartItems, item]
+  //       })
+  //     }
 
-      toast.success('Item Added to Cart', {
-        position: 'bottom-right'
-      })
+  //     toast.success('Item Added to Cart', {
+  //       position: 'bottom-right'
+  //     })
 
-    } catch (error) {
-      toast.error(error, {
-        position: 'top-left'
-      });
-      // navigate('/')
-    }
+  //   } catch (error) {
+  //     toast.error(error, {
+  //       position: 'top-left'
+  //     });
+  //     // navigate('/')
+  //   }
 
-  }
+  // }
 
-  const removeItemFromCart = async (id) => {
-    setState({
-      ...state,
-      cartItems: state.cartItems.filter(i => i.product !== id)
-    })
-    localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
-  }
+  // const removeItemFromCart = async (id) => {
+  //   setState({
+  //     ...state,
+  //     cartItems: state.cartItems.filter(i => i.product !== id)
+  //   })
+  //   localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
+  // }
 
-  const saveShippingInfo = async (data) => {
-    setState({
-      ...state,
-      shippingInfo: data
-    })
-    localStorage.setItem('shippingInfo', JSON.stringify(data))
-  }
+  // const saveShippingInfo = async (data) => {
+  //   setState({
+  //     ...state,
+  //     shippingInfo: data
+  //   })
+  //   localStorage.setItem('shippingInfo', JSON.stringify(data))
+  // }
 
   // const requestPermission = async () => {
   //   //requesting permission using Notification API
@@ -148,7 +148,7 @@ function App() {
         <Header  />
         <Routes>
           <Route path="/" element={<Home />} exact="true" />
-          <Route path="/product/:id" element={<ProductDetails  addItemToCart={addItemToCart} />} exact="true" />
+          <Route path="/product/:id" element={<ProductDetails   />} exact="true" />
           <Route path="/search/:keyword" element={<Home />} exact="true" />
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register exact="true" />} />
@@ -178,7 +178,7 @@ function App() {
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
           <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
-          <Route path="/cart" element={<Cart  addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
+          <Route path="/cart" element={<Cart    />} exact="true" />
           <Route path="/shipping" element={<Shipping  />} />
           <Route path="/confirm" element={<ConfirmOrder  />} />
           <Route path="/payment" element={<Payment  />} />
