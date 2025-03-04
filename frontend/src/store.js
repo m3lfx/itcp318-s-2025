@@ -5,6 +5,7 @@ import {
     productsReducer,
     productDetailsReducer,
     newProductReducer,
+    newReviewReducer,
     
    
 } from './reducers/productReducers'
@@ -15,7 +16,10 @@ import { authReducer,
 
 import { cartReducer } from './reducers/cartReducers';
 
-import { newOrderReducer } from './reducers/orderReducers';
+import { newOrderReducer,
+    myOrdersReducer,
+    orderDetailsReducer,
+ } from './reducers/orderReducers';
 
 
 
@@ -44,6 +48,10 @@ const reducer = combineReducers({
     newProduct: newProductReducer,
     cart: cartReducer,
     newOrder: newOrderReducer,
+    myOrders: myOrdersReducer,
+    orderDetails: orderDetailsReducer,
+    newReview: newReviewReducer,
+
 })
 
 const middlware = [thunk]

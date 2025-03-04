@@ -8,11 +8,13 @@ import { getUser, getToken, successMsg, errMsg } from '../../utils/helpers';
 import ListReviews from '../Review/ListReviews';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProductDetails, clearErrors, } from '../../actions/productActions'
+import { getProductDetails, clearErrors, newReview } from '../../actions/productActions'
 import { addItemToCart } from '../../actions/cartActions'
 const ProductDetails = () => {
+    
     const { loading, error, product } = useSelector(state => state.productDetails);
     const { user } = useSelector(state => state.auth)
+    const { error: reviewError, success } = useSelector(state => state.newReview)
     // const [product, setProduct] = useState({})
     // const [error, setError] = useState('')
     const [quantity, setQuantity] = useState(1)
@@ -25,8 +27,8 @@ const ProductDetails = () => {
 
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
-    const [errorReview, setErrorReview] = useState('');
-    const [success, setSuccess] = useState('')
+    // const [errorReview, setErrorReview] = useState('');
+    // const [success, setSuccess] = useState('')
     // const [user, setUser] = useState(getUser())
 
     let { id } = useParams()
@@ -147,51 +149,66 @@ const ProductDetails = () => {
         }
     }
 
-    const newReview = async (reviewData) => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}`
-                }
-            }
+    // const newReview = async (reviewData) => {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${getToken()}`
+    //             }
+    //         }
 
-            const { data } = await axios.put(`${import.meta.env.VITE_API}/review`, reviewData, config)
-            setSuccess(data.success)
+    //         const { data } = await axios.put(`${import.meta.env.VITE_API}/review`, reviewData, config)
+    //         setSuccess(data.success)
 
-        } catch (error) {
-            setErrorReview(error.response.data.message)
-        }
-    }
+    //     } catch (error) {
+    //         setErrorReview(error.response.data.message)
+    //     }
+    // }
 
     const reviewHandler = () => {
         const formData = new FormData();
         formData.set('rating', rating);
         formData.set('comment', comment);
         formData.set('productId', id);
-        newReview(formData)
+        dispatch(newReview(formData))
 
     }
 
+    // useEffect(() => {
+    //     dispatch(getProductDetails(id))
+    //     if (error) {
+    //         navigate('/')
+    //         // setError('')
+    //     }
+
+    //     if (errorReview) {
+    //         errMsg(errorReview)
+    //         setErrorReview('')
+    //     }
+    //     if (success) {
+    //         successMsg('Review posted successfully')
+    //         setSuccess(false)
+
+    //     }
+    // }, [id, error, errorReview, success]);
+    // console.log(state)
+    // localStorage.setItem('cartItems', JSON.stringify(cartItems))
     useEffect(() => {
         dispatch(getProductDetails(id))
         if (error) {
-            navigate('/')
-            // setError('')
+            // notify(error)
+            dispatch(clearErrors())
         }
-
-        if (errorReview) {
-            errMsg(errorReview)
-            setErrorReview('')
+        if (reviewError) {
+            dispatch(clearErrors())
         }
         if (success) {
             successMsg('Review posted successfully')
-            setSuccess(false)
+            // setSuccess(false)
 
         }
-    }, [id, error, errorReview, success]);
-    // console.log(state)
-    // localStorage.setItem('cartItems', JSON.stringify(cartItems))
+    }, [id, error, success, reviewError, dispatch, navigate]);
     return (
         <>
             <MetaData title={product.name} />

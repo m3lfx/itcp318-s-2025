@@ -2,10 +2,13 @@ import  {  useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import MetaData from '../Layout/MetaData'
 import CheckoutSteps from './CheckoutSteps'
-import { getUser } from '../../utils/helpers'
-const ConfirmOrder = ({cartItems, shippingInfo}) => {
-    const [user, setUser] = useState(getUser() ? getUser() : {})
+// import { getUser } from '../../utils/helpers'
+import { useSelector } from 'react-redux'
+const ConfirmOrder = () => {
+    // const [user, setUser] = useState(getUser() ? getUser() : {})
     let navigate = useNavigate();
+    const { cartItems, shippingInfo } = useSelector(state => state.cart)
+    const { user } = useSelector(state => state.auth)
     // Calculate Order Prices
     const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
     const shippingPrice = itemsPrice > 200 ? 0 : 25
@@ -31,7 +34,7 @@ const ConfirmOrder = ({cartItems, shippingInfo}) => {
             <div className="row d-flex justify-content-between">
                 <div className="col-12 col-lg-8 mt-5 order-confirm">
                     <h4 className="mb-3">Shipping Info</h4>
-                    {getUser() && <p><b>Name:</b> {user && user.name}</p>}
+                    {user && <p><b>Name:</b> {user && user.name}</p>}
                     <p><b>Phone:</b> {shippingInfo.phoneNo}</p>
                     <p className="mb-4"><b>Address:</b> {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`}</p>
 
