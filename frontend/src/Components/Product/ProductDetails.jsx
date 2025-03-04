@@ -9,8 +9,10 @@ import ListReviews from '../Review/ListReviews';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProductDetails, clearErrors, } from '../../actions/productActions'
-const ProductDetails = ({ cartItems, addItemToCart }) => {
+import { addItemToCart } from '../../actions/cartActions'
+const ProductDetails = () => {
     const { loading, error, product } = useSelector(state => state.productDetails);
+    const { user } = useSelector(state => state.auth)
     // const [product, setProduct] = useState({})
     // const [error, setError] = useState('')
     const [quantity, setQuantity] = useState(1)
@@ -25,7 +27,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
     const [comment, setComment] = useState('')
     const [errorReview, setErrorReview] = useState('');
     const [success, setSuccess] = useState('')
-    const [user, setUser] = useState(getUser())
+    // const [user, setUser] = useState(getUser())
 
     let { id } = useParams()
     let navigate = useNavigate()
@@ -109,7 +111,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
 
 
     const addToCart = async () => {
-        await addItemToCart(id, quantity);
+       dispatch(addItemToCart(id, quantity));
 
     }
 
@@ -175,7 +177,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
         dispatch(getProductDetails(id))
         if (error) {
             navigate('/')
-            setError('')
+            // setError('')
         }
 
         if (errorReview) {
@@ -189,7 +191,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
         }
     }, [id, error, errorReview, success]);
     // console.log(state)
-    localStorage.setItem('cartItems', JSON.stringify(cartItems))
+    // localStorage.setItem('cartItems', JSON.stringify(cartItems))
     return (
         <>
             <MetaData title={product.name} />
