@@ -6,15 +6,24 @@ import Loader from '../Layout/Loader'
 import Sidebar from './SideBar'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getToken } from '../../utils/helpers'
-import axios from 'axios'
+// import { getToken } from '../../utils/helpers'
+// import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { allOrders,  clearErrors, 
+    deleteOrder 
+} from '../../actions/orderActions'
+import { DELETE_ORDER_RESET } from '../../constants/orderConstants'
 
 const OrdersList = () => {
+    const dispatch = useDispatch();
+    const { loading, error, orders } = useSelector(state => state.allOrders);
+
+    const { isDeleted } = useSelector(state => state.order)
     let navigate = useNavigate();
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState('')
-    const [allOrders, setAllOrders] = useState([])
-    const [isDeleted, setIsDeleted] = useState(false)
+    // const [loading, setLoading] = useState(true)
+    // const [error, setError] = useState('')
+    // const [allOrders, setAllOrders] = useState([])
+    // const [isDeleted, setIsDeleted] = useState(false)
     const errMsg = (message = '') => toast.error(message, {
         position: 'bottom-right'
     });
@@ -22,50 +31,51 @@ const OrdersList = () => {
         position: 'bottom-right'
     });
 
-    const listOrders = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}`
-                }
-            }
-            const { data } = await axios.get(`${import.meta.env.VITE_API}/admin/orders`, config)
-            setAllOrders(data.orders)
-            setLoading(false)
-        } catch (error) {
-            setError(error.response.data.message)
-        }
-    }
-    const deleteOrder = async (id) => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}`
-                }
-            }
-            const { data } = await axios.delete(`${import.meta.env.VITE_API}/admin/order/${id}`, config)
-            setIsDeleted(data.success)
-            setLoading(false)
-        } catch (error) {
-            setError(error.response.data.message)
+    // const listOrders = async () => {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${getToken()}`
+    //             }
+    //         }
+    //         const { data } = await axios.get(`${import.meta.env.VITE_API}/admin/orders`, config)
+    //         setAllOrders(data.orders)
+    //         setLoading(false)
+    //     } catch (error) {
+    //         setError(error.response.data.message)
+    //     }
+    // }
+    // const deleteOrder = async (id) => {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${getToken()}`
+    //             }
+    //         }
+    //         const { data } = await axios.delete(`${import.meta.env.VITE_API}/admin/order/${id}`, config)
+    //         setIsDeleted(data.success)
+    //         setLoading(false)
+    //     } catch (error) {
+    //         setError(error.response.data.message)
 
-        }
-    }
+    //     }
+    // }
     useEffect(() => {
-        listOrders()
+        dispatch(allOrders())
         if (error) {
             errMsg(error)
-            setError('')
+            // setError('')\
+            dispatch(clearErrors())
         }
         if (isDeleted) {
             successMsg('Order deleted successfully');
             navigate('/admin/orders');
         }
-    }, [error, isDeleted])
+    }, [error, isDeleted ])
     const deleteOrderHandler = (id) => {
-        deleteOrder(id)
+        dispatch(deleteOrder(id))
     }
     const setOrders = () => {
         const data = {
@@ -99,7 +109,7 @@ const OrdersList = () => {
             rows: []
         }
 
-        allOrders.forEach(order => {
+       orders.forEach(order => {
             data.rows.push({
                 id: order._id,
                 numofItems: order.orderItems.length,
